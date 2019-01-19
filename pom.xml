@@ -5,7 +5,7 @@
     <parent>
         <artifactId>rookit</artifactId>
         <groupId>com.github.JPDSousa</groupId>
-        <version>-SNAPSHOT</version>
+        <version>0.0.1-SNAPSHOT</version>
         <relativePath>../rookit/pom.xml</relativePath>
     </parent>
     <modelVersion>4.0.0</modelVersion>
