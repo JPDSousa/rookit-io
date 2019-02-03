@@ -28,6 +28,10 @@
             <groupId>${rookit.group}.rookit-io</groupId>
             <artifactId>api</artifactId>
         </dependency>
+        <dependency>
+            <groupId>org.immutables</groupId>
+            <artifactId>value</artifactId>
+        </dependency>
     </dependencies>
 
     <dependencyManagement>
@@ -46,6 +50,12 @@
                 <groupId>${rookit.group}.rookit-io</groupId>
                 <artifactId>api</artifactId>
                 <version>${rookit.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.immutables</groupId>
+                <artifactId>value</artifactId>
+                <version>${immutables.version}</version>
+                <scope>provided</scope>
             </dependency>
         </dependencies>
     </dependencyManagement>
