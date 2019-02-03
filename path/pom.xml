@@ -3,24 +3,22 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 
-    <packaging>pom</packaging>
-
     <modelVersion>4.0.0</modelVersion>
 
+    <packaging>pom</packaging>
+
     <parent>
-        <groupId>com.github.JPDSousa</groupId>
-        <artifactId>rookit</artifactId>
+        <groupId>com.github.JPDSousa.rookit-io</groupId>
+        <artifactId>rookit-io</artifactId>
         <version>-SNAPSHOT</version>
     </parent>
 
-    <groupId>com.github.JPDSousa.rookit-io</groupId>
-    <artifactId>rookit-io</artifactId>
+    <artifactId>path</artifactId>
+    <name>Rookit IO Path</name>
 
     <modules>
-        <module>path</module>
         <module>api</module>
         <module>lib</module>
     </modules>
-
 
 </project>

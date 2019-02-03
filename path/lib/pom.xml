@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>com.github.JPDSousa.rookit-io</groupId>
+        <artifactId>path</artifactId>
+        <version>-SNAPSHOT</version>
+    </parent>
+
+    <artifactId>path-lib</artifactId>
+    <name>Rookit IO Path Lib</name>
+
+    <dependencies>
+        <dependency>
+            <groupId>${rookit.group}.rookit-io</groupId>
+            <artifactId>path-api</artifactId>
+        </dependency>
+    </dependencies>
+
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>${rookit.group}.rookit-io</groupId>
+                <artifactId>path-api</artifactId>
+                <version>${rookit.version}</version>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+
+</project>
