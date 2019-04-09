@@ -23,7 +23,10 @@ package org.rookit.io.file;
 
 import com.google.inject.AbstractModule;
 import com.google.inject.Module;
+import com.google.inject.Provides;
 import com.google.inject.Singleton;
+import org.rookit.config.guice.Config;
+import org.rookit.io.path.PathConfig;
 
 public final class FileModule extends AbstractModule {
 
@@ -37,7 +40,14 @@ public final class FileModule extends AbstractModule {
 
     @Override
     protected void configure() {
-        bind(TemporaryFilePool.class).to(TemporaryFilePoolImpl.class).in(Singleton.class);
+        bind(TemporaryFilePool.class).to(BaseTemporaryFilePool.class).in(Singleton.class);
+    }
+
+    @Provides
+    @Singleton
+    @Config
+    TemporaryFilePool configTempFilePool(@Config final PathConfig config) {
+        return new BaseTemporaryFilePool(config);
     }
 
 }

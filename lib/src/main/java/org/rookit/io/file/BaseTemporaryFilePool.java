@@ -36,18 +36,18 @@ import java.util.Queue;
 
 import static org.apache.commons.lang3.StringUtils.EMPTY;
 
-final class TemporaryFilePoolImpl implements TemporaryFilePool {
+final class BaseTemporaryFilePool implements TemporaryFilePool {
 
     /**
      * Logger for this class.
      */
-    private static final Logger logger = LoggerFactory.getLogger(TemporaryFilePoolImpl.class);
+    private static final Logger logger = LoggerFactory.getLogger(BaseTemporaryFilePool.class);
 
     private final PathConfig config;
     private final Queue<Path> tempFiles;
 
     @Inject
-    private TemporaryFilePoolImpl(final PathConfig config) {
+    BaseTemporaryFilePool(final PathConfig config) {
         this.config = config;
         this.tempFiles = Queues.newArrayDeque();
     }
@@ -86,5 +86,13 @@ final class TemporaryFilePoolImpl implements TemporaryFilePool {
         if (!errors.isEmpty()) {
             throw new IOException("The following files could not be deleted: " + errors);
         }
+    }
+
+    @Override
+    public String toString() {
+        return "BaseTemporaryFilePool{" +
+                "config=" + this.config +
+                ", tempFiles=" + this.tempFiles +
+                "}";
     }
 }

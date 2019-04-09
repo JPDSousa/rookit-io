@@ -23,7 +23,10 @@ package org.rookit.io.path;
 
 import com.google.inject.AbstractModule;
 import com.google.inject.Module;
+import com.google.inject.Provides;
 import com.google.inject.Singleton;
+import org.rookit.config.guice.Config;
+import org.rookit.io.file.TemporaryFilePool;
 
 public final class PathModule extends AbstractModule {
 
@@ -39,5 +42,13 @@ public final class PathModule extends AbstractModule {
     protected void configure() {
         bind(PathManager.class).to(BasePathManager.class).in(Singleton.class);
         bind(PathConfigFactory.class).to(PathConfigFactoryImpl.class).in(Singleton.class);
+    }
+
+    @Provides
+    @Singleton
+    @Config
+    PathManager configPathManager(@Config final PathConfig config,
+                                  @Config final TemporaryFilePool pool) {
+        return BasePathManager.create(config, pool);
     }
 }
