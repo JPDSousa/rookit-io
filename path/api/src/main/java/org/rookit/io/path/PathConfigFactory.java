@@ -21,10 +21,10 @@
  ******************************************************************************/
 package org.rookit.io.path;
 
-import org.rookit.config.Configuration;
+import org.rookit.utils.object.DynamicObject;
 
 public interface PathConfigFactory {
 
-    PathConfig create(Configuration configuration);
+    PathConfig create(DynamicObject configuration);
 
 }

@@ -15,12 +15,43 @@
 
     <groupId>com.github.JPDSousa.rookit-io</groupId>
     <artifactId>rookit-io</artifactId>
+    <name>Rookit IO</name>
 
     <modules>
         <module>path</module>
         <module>api</module>
         <module>lib</module>
+        <module>http</module>
     </modules>
 
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>${rookit.group}.rookit-config</groupId>
+                <artifactId>api</artifactId>
+                <version>${rookit.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>${rookit.group}.rookit-failsafe</groupId>
+                <artifactId>api</artifactId>
+                <version>${rookit.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>${rookit.group}.rookit-io</groupId>
+                <artifactId>api</artifactId>
+                <version>${rookit.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>${rookit.group}.rookit-io</groupId>
+                <artifactId>path-api</artifactId>
+                <version>${rookit.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>${rookit.group}.rookit-utils</groupId>
+                <artifactId>api</artifactId>
+                <version>${rookit.version}</version>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
 
 </project>

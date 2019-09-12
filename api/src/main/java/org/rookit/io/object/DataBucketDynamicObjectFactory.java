@@ -19,14 +19,14 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  ******************************************************************************/
-package org.rookit.io.path;
+package org.rookit.io.object;
 
-import java.io.Closeable;
-import java.io.IOException;
-import java.net.URI;
-import java.nio.file.Path;
+import io.reactivex.Single;
+import org.rookit.io.data.DataSource;
+import org.rookit.utils.object.DynamicObject;
+import org.rookit.utils.object.DynamicObjectFactory;
 
-public interface PathManager extends Closeable {
+public interface DataBucketDynamicObjectFactory extends DynamicObjectFactory {
 
-    Path handleURI(URI uri) throws IOException;
+    Single<DynamicObject> fromDataSource(DataSource dataBucket);
 }

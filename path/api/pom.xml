@@ -17,10 +17,6 @@
 
     <dependencies>
         <dependency>
-            <groupId>${rookit.group}.rookit-config</groupId>
-            <artifactId>api</artifactId>
-        </dependency>
-        <dependency>
             <groupId>${rookit.group}.rookit-failsafe</groupId>
             <artifactId>api</artifactId>
         </dependency>
@@ -33,31 +29,5 @@
             <artifactId>value</artifactId>
         </dependency>
     </dependencies>
-
-    <dependencyManagement>
-        <dependencies>
-            <dependency>
-                <groupId>${rookit.group}.rookit-config</groupId>
-                <artifactId>api</artifactId>
-                <version>${rookit.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>${rookit.group}.rookit-failsafe</groupId>
-                <artifactId>api</artifactId>
-                <version>${rookit.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>${rookit.group}.rookit-io</groupId>
-                <artifactId>api</artifactId>
-                <version>${rookit.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.immutables</groupId>
-                <artifactId>value</artifactId>
-                <version>${immutables.version}</version>
-                <scope>provided</scope>
-            </dependency>
-        </dependencies>
-    </dependencyManagement>
 
 </project>

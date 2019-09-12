@@ -19,35 +19,35 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  ******************************************************************************/
-package org.rookit.io.file;
+package org.rookit.io.path.registry;
 
 import com.google.inject.AbstractModule;
 import com.google.inject.Module;
 import com.google.inject.Provides;
 import com.google.inject.Singleton;
-import org.rookit.config.guice.Config;
-import org.rookit.io.path.PathConfig;
+import org.rookit.utils.registry.Registry;
 
-public final class FileModule extends AbstractModule {
+import java.net.URI;
+import java.nio.file.FileSystem;
 
-    private static final Module MODULE = new FileModule();
+public final class RegistryModule extends AbstractModule {
+
+    private static final Module MODULE = new RegistryModule();
 
     public static Module getModule() {
         return MODULE;
     }
 
-    private FileModule() {}
+    private RegistryModule() {}
 
     @Override
     protected void configure() {
-        bind(TemporaryFilePool.class).to(BaseTemporaryFilePool.class).in(Singleton.class);
+        bind(PathRegistries.class).to(PathRegistriesImpl.class).in(Singleton.class);
     }
 
     @Provides
     @Singleton
-    @Config
-    TemporaryFilePool configTempFilePool(@Config final PathConfig config) {
-        return new BaseTemporaryFilePool(config);
+    Registry<URI, FileSystem> fileSystemRegistry(final PathRegistries registries) {
+        return registries.uriFileSystemRegistry();
     }
-
 }

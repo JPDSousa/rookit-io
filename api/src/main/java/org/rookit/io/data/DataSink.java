@@ -19,15 +19,46 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  ******************************************************************************/
-package org.rookit.io.path;
+package org.rookit.io.data;
 
-import org.rookit.utils.object.DynamicObject;
+import io.reactivex.Completable;
+import io.reactivex.Single;
+import io.reactivex.functions.Consumer;
+import io.reactivex.functions.Function;
 
-final class PathConfigFactoryImpl implements PathConfigFactory {
+import java.io.IOException;
+import java.io.OutputStream;
+import java.io.Writer;
 
-    @Override
-    public PathConfig create(final DynamicObject configuration) {
-        return new PathConfigImpl(configuration);
+public interface DataSink {
+
+    void clear() throws IOException;
+
+    boolean isEmpty();
+
+    OutputStream writeTo() throws IOException;
+
+    default Completable writeTo(final Consumer<OutputStream> consumer) {
+
+        return Completable.fromAction(() -> {
+            try (final OutputStream outputStream = writeTo()) {
+                consumer.accept(outputStream);
+            }
+        });
     }
+
+    Completable writeToWithWriter(Consumer<Writer> consumer);
+
+    default <T> Single<T> writeTo(final Function<OutputStream, T> function) {
+        return Single.fromCallable(() -> {
+            try (final OutputStream outputStream = writeTo()) {
+                return function.apply(outputStream);
+            }
+        });
+    }
+
+    <T> Single<T> writeToWithWriter(Function<Writer, T> function);
+
+    Completable copyFrom(final DataSource dataBucket);
 
 }

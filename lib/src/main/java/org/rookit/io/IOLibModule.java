@@ -19,15 +19,28 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  ******************************************************************************/
-package org.rookit.io.path;
+package org.rookit.io;
 
-import org.rookit.utils.object.DynamicObject;
+import com.google.inject.AbstractModule;
+import com.google.inject.Module;
+import com.google.inject.util.Modules;
+import org.rookit.io.object.IOObjectModule;
+import org.rookit.io.uri.IOURIModule;
+import org.rookit.io.url.IOURLModule;
 
-final class PathConfigFactoryImpl implements PathConfigFactory {
+public final class IOLibModule extends AbstractModule {
 
-    @Override
-    public PathConfig create(final DynamicObject configuration) {
-        return new PathConfigImpl(configuration);
+    private static final Module MODULE = Modules.combine(
+            new IOLibModule(),
+            IOObjectModule.getModule(),
+            IOURIModule.getModule(),
+            IOURLModule.getModule()
+    );
+
+    public static Module getModule() {
+        return MODULE;
     }
+
+    private IOLibModule() {}
 
 }

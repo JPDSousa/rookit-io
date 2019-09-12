@@ -24,6 +24,10 @@
             <groupId>${rookit.group}.rookit-io</groupId>
             <artifactId>path-api</artifactId>
         </dependency>
+        <dependency>
+            <groupId>${rookit.group}.rookit-config</groupId>
+            <artifactId>api</artifactId>
+        </dependency>
     </dependencies>
 
     <dependencyManagement>

@@ -28,8 +28,6 @@ import java.nio.file.Path;
 @Value.Immutable
 public interface PathConfig {
 
-    boolean failIfAbsent();
-
     Path temporaryDirectory();
 
 }

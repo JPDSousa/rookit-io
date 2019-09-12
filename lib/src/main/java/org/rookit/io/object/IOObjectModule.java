@@ -19,16 +19,24 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  ******************************************************************************/
-package org.rookit.io.file;
+package org.rookit.io.object;
 
-import java.io.Closeable;
-import java.io.IOException;
-import java.nio.file.Path;
+import com.google.inject.AbstractModule;
+import com.google.inject.Module;
+import com.google.inject.Singleton;
 
-public interface TemporaryFilePool extends Closeable {
+public final class IOObjectModule extends AbstractModule {
 
-    Path poll() throws IOException;
+    private static final Module MODULE = new IOObjectModule();
 
-    boolean offer(Path path) throws IOException;
+    public static Module getModule() {
+        return MODULE;
+    }
 
+    private IOObjectModule() {}
+
+    @Override
+    protected void configure() {
+        bind(DataBucketDynamicObjectFactory.class).to(BaseDataBucketDynamicObjectFactory.class).in(Singleton.class);
+    }
 }

@@ -19,15 +19,29 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  ******************************************************************************/
-package org.rookit.io.path;
+package org.rookit.io.uri;
 
-import org.rookit.utils.object.DynamicObject;
+import com.google.inject.AbstractModule;
+import com.google.inject.Module;
+import com.google.inject.Singleton;
+import com.google.inject.TypeLiteral;
+import org.rookit.io.data.DataBucketFactory;
 
-final class PathConfigFactoryImpl implements PathConfigFactory {
+import java.net.URI;
 
-    @Override
-    public PathConfig create(final DynamicObject configuration) {
-        return new PathConfigImpl(configuration);
+public final class IOURIModule extends AbstractModule {
+
+    private static final Module MODULE = new IOURIModule();
+
+    public static Module getModule() {
+        return MODULE;
     }
 
+    private IOURIModule() {}
+
+    @SuppressWarnings({"AnonymousInnerClassMayBeStatic", "AnonymousInnerClass", "EmptyClass"})
+    @Override
+    protected void configure() {
+        bind(new TypeLiteral<DataBucketFactory<URI>>() {}).to(URIDataBucketFactory.class).in(Singleton.class);
+    }
 }

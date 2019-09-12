@@ -19,15 +19,22 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  ******************************************************************************/
-package org.rookit.io.path;
+package org.rookit.io.path.registry;
 
+import org.rookit.io.data.DataSource;
 import org.rookit.utils.object.DynamicObject;
+import org.rookit.utils.registry.Registry;
 
-final class PathConfigFactoryImpl implements PathConfigFactory {
+import java.net.URI;
+import java.nio.file.FileSystem;
+import java.nio.file.Path;
 
-    @Override
-    public PathConfig create(final DynamicObject configuration) {
-        return new PathConfigImpl(configuration);
-    }
+public interface PathRegistries {
+
+    Registry<String, DataSource> directoryRegistry(Path directory);
+
+    Registry<String, DynamicObject> serializedDirectoryRegistry(Path directory);
+
+    Registry<URI, FileSystem> uriFileSystemRegistry();
 
 }

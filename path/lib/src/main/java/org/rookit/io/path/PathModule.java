@@ -23,14 +23,20 @@ package org.rookit.io.path;
 
 import com.google.inject.AbstractModule;
 import com.google.inject.Module;
-import com.google.inject.Provides;
 import com.google.inject.Singleton;
-import org.rookit.config.guice.Config;
-import org.rookit.io.file.TemporaryFilePool;
+import com.google.inject.util.Modules;
+import org.rookit.io.data.FileModule;
+import org.rookit.io.path.pool.PathPoolModule;
+import org.rookit.io.path.registry.RegistryModule;
 
 public final class PathModule extends AbstractModule {
 
-    private static final Module MODULE = new PathModule();
+    private static final Module MODULE = Modules.combine(
+            new PathModule(),
+            FileModule.getModule(),
+            PathPoolModule.getModule(),
+            RegistryModule.getModule()
+    );
 
     public static Module getModule() {
         return MODULE;
@@ -40,15 +46,6 @@ public final class PathModule extends AbstractModule {
 
     @Override
     protected void configure() {
-        bind(PathManager.class).to(BasePathManager.class).in(Singleton.class);
         bind(PathConfigFactory.class).to(PathConfigFactoryImpl.class).in(Singleton.class);
-    }
-
-    @Provides
-    @Singleton
-    @Config
-    PathManager configPathManager(@Config final PathConfig config,
-                                  @Config final TemporaryFilePool pool) {
-        return BasePathManager.create(config, pool);
     }
 }

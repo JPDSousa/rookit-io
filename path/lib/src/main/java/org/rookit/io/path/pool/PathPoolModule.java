@@ -19,15 +19,37 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  ******************************************************************************/
-package org.rookit.io.path;
+package org.rookit.io.path.pool;
 
-import org.rookit.utils.object.DynamicObject;
+import com.google.inject.AbstractModule;
+import com.google.inject.Module;
+import com.google.inject.Provides;
+import com.google.inject.Singleton;
+import org.rookit.io.path.PathConfig;
 
-final class PathConfigFactoryImpl implements PathConfigFactory {
+import java.io.IOException;
+
+@SuppressWarnings("MethodMayBeStatic")
+public final class PathPoolModule extends AbstractModule {
+
+    private static final Module MODULE = new PathPoolModule();
+
+    public static Module getModule() {
+        return MODULE;
+    }
+
+    private PathPoolModule() {}
 
     @Override
-    public PathConfig create(final DynamicObject configuration) {
-        return new PathConfigImpl(configuration);
+    protected void configure() {
+        bind(TemporaryPathPoolFactory.class).to(BaseTemporaryPathPoolFactory.class).in(Singleton.class);
+    }
+
+    @Provides
+    @Singleton
+    TemporaryPathPool basePathPool(final TemporaryPathPoolFactory factory,
+                                   final PathConfig config) throws IOException {
+        return factory.create(config);
     }
 
 }

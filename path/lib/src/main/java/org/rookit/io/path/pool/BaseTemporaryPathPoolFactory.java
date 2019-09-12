@@ -19,30 +19,51 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  ******************************************************************************/
-package org.rookit.io.path;
+package org.rookit.io.path.pool;
 
-import org.rookit.utils.object.DynamicObject;
+import com.google.common.collect.Maps;
+import com.google.common.collect.Queues;
+import com.google.inject.Inject;
+import org.rookit.io.path.PathConfig;
 
+import java.io.Closeable;
+import java.io.IOException;
+import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.Paths;
+import java.util.Map;
 
-final class PathConfigImpl implements PathConfig {
+final class BaseTemporaryPathPoolFactory implements TemporaryPathPoolFactory, Closeable {
 
-    private final DynamicObject configuration;
+    private final Map<PathConfig, TemporaryPathPool> pools;
 
-    PathConfigImpl(final DynamicObject configuration) {
-        this.configuration = configuration;
+    @Inject
+    private BaseTemporaryPathPoolFactory() {
+        this.pools = Maps.newHashMap();
     }
 
     @Override
-    public Path temporaryDirectory() {
-        return Paths.get(this.configuration.getString("temporaryDirectory"));
+    public TemporaryPathPool create(final PathConfig config) throws IOException {
+        final Path path = config.temporaryDirectory();
+        if (!Files.exists(path)) {
+            Files.createDirectory(path);
+        }
+
+        return this.pools.computeIfAbsent(config,
+                key -> new BaseTemporaryPathPool(config, Queues.newLinkedBlockingDeque()));
     }
 
     @Override
     public String toString() {
-        return "PathConfigImpl{" +
-                "configuration=" + this.configuration +
+        return "BaseTemporaryPathPoolFactory{" +
+                "pools=" + this.pools +
                 "}";
+    }
+
+    @Override
+    public void close() throws IOException {
+        // TODO this needs more care
+        for (final TemporaryPathPool temporaryPathPool : this.pools.values()) {
+            temporaryPathPool.close();
+        }
     }
 }

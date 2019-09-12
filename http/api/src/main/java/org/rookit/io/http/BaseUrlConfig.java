@@ -19,15 +19,24 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  ******************************************************************************/
-package org.rookit.io.path;
+package org.rookit.io.http;
 
-import org.rookit.utils.object.DynamicObject;
+import okhttp3.HttpUrl;
 
-final class PathConfigFactoryImpl implements PathConfigFactory {
+public interface BaseUrlConfig {
 
-    @Override
-    public PathConfig create(final DynamicObject configuration) {
-        return new PathConfigImpl(configuration);
+    String host();
+
+    int port();
+
+    String scheme();
+
+    default HttpUrl url() {
+        return new HttpUrl.Builder()
+                .host(host())
+                .port(port())
+                .scheme(scheme())
+                .build();
     }
 
 }

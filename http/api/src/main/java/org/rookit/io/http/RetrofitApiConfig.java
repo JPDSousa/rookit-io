@@ -19,15 +19,34 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  ******************************************************************************/
-package org.rookit.io.path;
+package org.rookit.io.http;
 
-import org.rookit.utils.object.DynamicObject;
+import com.google.common.util.concurrent.RateLimiter;
+import okhttp3.OkHttpClient;
+import retrofit2.Retrofit;
 
-final class PathConfigFactoryImpl implements PathConfigFactory {
+import java.time.Duration;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
 
-    @Override
-    public PathConfig create(final DynamicObject configuration) {
-        return new PathConfigImpl(configuration);
+public interface RetrofitApiConfig extends BaseUrlConfig {
+
+    default Duration readTimeout() {
+        return Duration.ofSeconds(10);
     }
+
+    default Duration connectTimeout() {
+        return Duration.ofSeconds(10);
+    }
+
+    RateLimiter rateLimiter();
+
+    default ScheduledExecutorService scheduler() {
+        return Executors.newScheduledThreadPool(2);
+    }
+
+    OkHttpClient httpClient();
+
+    Retrofit retrofit();
 
 }

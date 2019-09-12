@@ -19,15 +19,50 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  ******************************************************************************/
-package org.rookit.io.path;
+package org.rookit.io.path.registry;
 
-import org.rookit.utils.object.DynamicObject;
+import io.reactivex.Maybe;
+import io.reactivex.Single;
+import org.rookit.io.data.DataBucketFactory;
+import org.rookit.io.data.DataSource;
+import org.rookit.utils.registry.Registry;
 
-final class PathConfigFactoryImpl implements PathConfigFactory {
+import java.nio.file.Files;
+import java.nio.file.Path;
 
-    @Override
-    public PathConfig create(final DynamicObject configuration) {
-        return new PathConfigImpl(configuration);
+final class PathRegistry implements Registry<String, DataSource> {
+
+    private final Path directory;
+    private final DataBucketFactory<Path> bucketFactory;
+
+    PathRegistry(final Path directory, final DataBucketFactory<Path> bucketFactory) {
+        this.directory = directory;
+        this.bucketFactory = bucketFactory;
     }
 
+    @Override
+    public Maybe<DataSource> get(final String key) {
+        return Maybe.just(this.directory.resolve(key))
+                .filter(Files::exists)
+                .map(this.bucketFactory::create);
+    }
+
+    @Override
+    public Single<DataSource> fetch(final String key) {
+        return Single.just(this.directory.resolve(key))
+                .map(this.bucketFactory::create);
+    }
+
+    @Override
+    public void close() {
+        // nothing to be closed
+    }
+
+    @Override
+    public String toString() {
+        return "PathRegistry{" +
+                "directory=" + this.directory +
+                ", bucketFactory=" + this.bucketFactory +
+                "}";
+    }
 }

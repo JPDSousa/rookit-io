@@ -3,20 +3,18 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <parent>
-        <artifactId>rookit-io</artifactId>
+        <artifactId>http</artifactId>
         <groupId>com.github.JPDSousa.rookit-io</groupId>
         <version>-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>api</artifactId>
-
-    <name>Rookit IO API</name>
+    <artifactId>http-test</artifactId>
 
     <dependencies>
         <dependency>
-            <groupId>${rookit.group}.rookit-utils</groupId>
-            <artifactId>api</artifactId>
+            <groupId>com.squareup.okhttp3</groupId>
+            <artifactId>mockwebserver</artifactId>
         </dependency>
     </dependencies>
 

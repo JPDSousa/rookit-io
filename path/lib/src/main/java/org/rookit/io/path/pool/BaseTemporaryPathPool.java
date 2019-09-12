@@ -19,11 +19,9 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  ******************************************************************************/
-package org.rookit.io.file;
+package org.rookit.io.path.pool;
 
 import com.google.common.collect.Maps;
-import com.google.common.collect.Queues;
-import com.google.inject.Inject;
 import org.rookit.io.path.PathConfig;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -36,28 +34,36 @@ import java.util.Queue;
 
 import static org.apache.commons.lang3.StringUtils.EMPTY;
 
-final class BaseTemporaryFilePool implements TemporaryFilePool {
+final class BaseTemporaryPathPool implements TemporaryPathPool {
 
     /**
      * Logger for this class.
      */
-    private static final Logger logger = LoggerFactory.getLogger(BaseTemporaryFilePool.class);
+    private static final Logger logger = LoggerFactory.getLogger(BaseTemporaryPathPool.class);
 
     private final PathConfig config;
     private final Queue<Path> tempFiles;
 
-    @Inject
-    BaseTemporaryFilePool(final PathConfig config) {
+    BaseTemporaryPathPool(final PathConfig config, final Queue<Path> tempFiles) {
         this.config = config;
-        this.tempFiles = Queues.newArrayDeque();
+        //noinspection AssignmentOrReturnOfFieldWithMutableType -> intentional
+        this.tempFiles = tempFiles;
     }
 
     @Override
-    public Path poll() throws IOException {
-        final Path tempFile = Files.createTempFile(this.config.temporaryDirectory(), EMPTY, EMPTY);
+    public Path pollFile() throws IOException {
+        return poll(Files.createTempFile(this.config.temporaryDirectory(), EMPTY, ".temp"));
+    }
+
+    @Override
+    public Path pollDirectory() throws IOException {
+        return poll(Files.createTempDirectory(this.config.temporaryDirectory(), EMPTY));
+    }
+
+    private Path poll(final Path path) {
         // TODO should take into consideration whether the file was added or not to the queue.
-        this.tempFiles.offer(tempFile);
-        return tempFile;
+        this.tempFiles.offer(path);
+        return path;
     }
 
     @Override
@@ -73,6 +79,7 @@ final class BaseTemporaryFilePool implements TemporaryFilePool {
         final Map<String, IOException> errors = Maps.newHashMap();
         logger.debug("Closing path manager");
 
+        // TODO make me parallel
         while (!this.tempFiles.isEmpty()) {
             final Path tempFile = this.tempFiles.remove();
             try {
@@ -90,7 +97,7 @@ final class BaseTemporaryFilePool implements TemporaryFilePool {
 
     @Override
     public String toString() {
-        return "BaseTemporaryFilePool{" +
+        return "BaseTemporaryPathPool{" +
                 "config=" + this.config +
                 ", tempFiles=" + this.tempFiles +
                 "}";

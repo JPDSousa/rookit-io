@@ -19,15 +19,18 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  ******************************************************************************/
-package org.rookit.io.path;
+package org.rookit.io.path.pool;
 
-import org.rookit.utils.object.DynamicObject;
+import java.io.Closeable;
+import java.io.IOException;
+import java.nio.file.Path;
 
-final class PathConfigFactoryImpl implements PathConfigFactory {
+public interface TemporaryPathPool extends Closeable {
 
-    @Override
-    public PathConfig create(final DynamicObject configuration) {
-        return new PathConfigImpl(configuration);
-    }
+    Path pollFile() throws IOException;
+
+    Path pollDirectory() throws IOException;
+
+    boolean offer(Path path) throws IOException;
 
 }
